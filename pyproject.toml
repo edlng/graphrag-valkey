@@ -1,0 +1,43 @@
+[project]
+name = "graphrag-valkey"
+version = "0.1.0"
+description = "Valkey storage, cache, and vector store backends for Microsoft GraphRAG."
+license = {text = "MIT"}
+readme = "README.md"
+requires-python = ">=3.11,<3.14"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+]
+dependencies = [
+    "graphrag-cache==3.0.9",
+    "graphrag-storage==3.0.9",
+    "graphrag-vectors==3.0.9",
+    "numpy~=2.2",
+    "valkey-glide==2.3.1",
+    "valkey-glide-sync==2.3.1",
+]
+
+[project.optional-dependencies]
+dev = [
+    "graphrag~=3.0",
+    "pytest~=8.3",
+    "pytest-asyncio~=0.24",
+    "pytest-timeout~=2.3",
+]
+
+[project.urls]
+Source = "https://github.com/valkey-io/graphrag-valkey"
+
+[build-system]
+requires = ["hatchling>=1.27.0,<2.0.0"]
+build-backend = "hatchling.build"
+
+[tool.pytest.ini_options]
+addopts = "-s"
+asyncio_default_fixture_loop_scope = "function"
+asyncio_mode = "auto"
+timeout = 60
+testpaths = ["tests"]
