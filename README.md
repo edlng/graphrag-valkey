@@ -135,7 +135,7 @@ uv run pytest
 To start Valkey locally with the Search module:
 
 ```bash
-docker run -d --name valkey -p 6379:6379 valkey/valkey-bundle:latest
+docker run -d --name valkey -p 6379:6379 valkey/valkey-bundle:9.1-rc2
 ```
 
 For E2E tests, Ollama must also be running with the required models:
