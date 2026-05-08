@@ -18,6 +18,7 @@ DEFAULT_DB = 0
 DEFAULT_REQUEST_TIMEOUT = 1000
 KEY_SEPARATOR = ":"
 METADATA_SUFFIX = ":__meta__"
+DELETE_BATCH_SIZE = 1000
 
 
 def create_sync_client(
@@ -138,3 +139,21 @@ async def create_async_client(
     )
     logger.info("Connecting (async) to Valkey at %s:%d (db=%d)", host, port, db)
     return await AsyncGlideClient.create(config)
+
+
+async def batched_delete_async(
+    client: AsyncGlideClient, keys: list[str], batch_size: int = DELETE_BATCH_SIZE
+) -> None:
+    """Delete keys in batches to avoid memory pressure with large key sets."""
+    for i in range(0, len(keys), batch_size):
+        batch = keys[i : i + batch_size]
+        await client.delete(batch)
+
+
+def batched_delete_sync(
+    client: GlideClient, keys: list[str], batch_size: int = DELETE_BATCH_SIZE
+) -> None:
+    """Delete keys in batches to avoid memory pressure with large key sets."""
+    for i in range(0, len(keys), batch_size):
+        batch = keys[i : i + batch_size]
+        client.delete(batch)

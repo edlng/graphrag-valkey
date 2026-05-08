@@ -66,12 +66,12 @@ class TestCacheGet:
         client.get.return_value = None
         assert await cache.get("k") is None
 
-    async def test_returns_none_and_deletes_on_corrupt_json(self):
+    async def test_returns_none_on_corrupt_json(self):
         cache, client = _make_cache()
         client.get.return_value = b"not-json"
         result = await cache.get("k")
         assert result is None
-        client.delete.assert_called_once_with(["c:k"])
+        client.delete.assert_not_called()
 
     async def test_returns_none_on_exception(self):
         cache, client = _make_cache()

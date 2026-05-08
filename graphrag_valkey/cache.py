@@ -17,6 +17,7 @@ from graphrag_valkey.client import (
     DEFAULT_PORT,
     DEFAULT_REQUEST_TIMEOUT,
     KEY_SEPARATOR,
+    batched_delete_async,
     create_async_client,
     scan_keys_async,
 )
@@ -89,8 +90,9 @@ class ValkeyCache(Cache):
             data = json.loads(raw)
             return data.get("result")
         except (json.JSONDecodeError, UnicodeDecodeError):
-            logger.warning("Corrupt cache entry for key %s, deleting", key)
-            await self.delete(key)
+            logger.warning(
+                "Corrupt cache entry for key %s — returning None", key
+            )
             return None
         except Exception:
             logger.exception("Error reading cache key %s from Valkey", key)
@@ -135,7 +137,7 @@ class ValkeyCache(Cache):
             pattern = f"{self._prefix}{KEY_SEPARATOR}*"
             all_keys = await scan_keys_async(client, pattern, self._encoding)
             if all_keys:
-                await client.delete(all_keys)
+                await batched_delete_async(client, all_keys)
         except Exception:
             logger.exception("Error clearing Valkey cache")
 

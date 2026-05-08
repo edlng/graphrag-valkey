@@ -25,6 +25,7 @@ from graphrag_valkey.client import (
     DEFAULT_REQUEST_TIMEOUT,
     KEY_SEPARATOR,
     METADATA_SUFFIX,
+    batched_delete_async,
     create_async_client,
     create_sync_client,
     scan_keys_async,
@@ -219,7 +220,7 @@ class ValkeyStorage(Storage):
             pattern = f"{self._prefix}{KEY_SEPARATOR}*"
             all_keys = await scan_keys_async(client, pattern, self._encoding)
             if all_keys:
-                await client.delete(all_keys)
+                await batched_delete_async(client, all_keys)
         except Exception:
             logger.exception("Error clearing Valkey storage")
 
