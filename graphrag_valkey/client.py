@@ -49,6 +49,7 @@ def create_sync_client(
         addresses=[NodeAddress(host, port)],
         request_timeout=request_timeout,
         database_id=db,
+        client_name="graphrag_valkey_client",
     )
     logger.info("Connecting (sync) to Valkey at %s:%d (db=%d)", host, port, db)
     return GlideClient.create(config)
@@ -136,6 +137,7 @@ async def create_async_client(
         addresses=[AsyncNodeAddress(host, port)],
         request_timeout=request_timeout,
         database_id=db,
+        client_name="graphrag_valkey_client",
     )
     logger.info("Connecting (async) to Valkey at %s:%d (db=%d)", host, port, db)
     return await AsyncGlideClient.create(config)
