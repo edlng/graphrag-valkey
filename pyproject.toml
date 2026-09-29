@@ -16,8 +16,8 @@ dependencies = [
     "graphrag-storage~=3.0.9",
     "graphrag-vectors~=3.0.9",
     "numpy~=2.2",
-    "valkey-glide~=2.3.1",
-    "valkey-glide-sync~=2.3.1",
+    "valkey-glide~=2.5.2",
+    "valkey-glide-sync~=2.5.2",
 ]
 
 [project.optional-dependencies]
